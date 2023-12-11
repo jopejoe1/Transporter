@@ -1,22 +1,37 @@
 {
-  description = "A Nix-flake-based Python development environment";
+  description = "Dicord voice mover";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+  inputs.flake-utils.url = "github:numtide/flake-utils";
 
-  outputs = { self, nixpkgs }:
-    let
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
-      forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+
         pkgs = import nixpkgs { inherit system; };
-      });
-    in
-    {
-      devShells = forEachSupportedSystem ({ pkgs }: {
-        default = pkgs.mkShell {
-          packages = [
-            (with pkgs.python311Packages; [ discordpy ])
-          ];
+      in rec {
+        packages = flake-utils.lib.flattenTree {
+          transporter = pkgs.stdenv.mkDerivation {
+            pname = "transporter";
+            version = "unstable-2023-12-11";
+
+            src = ./.;
+
+            propagatedBuildInputs = [
+              (pkgs.python3.withPackages
+                (python3Packages: with python3Packages; [ discordpy ]))
+            ];
+            dontUnpack = true;
+            installPhase = "install -Dm755 ${./main.py} $out/bin/transporter";
+          };
         };
+        defaultPackage = packages.transporter;
+        apps = {
+          transporter = flake-utils.lib.mkApp {
+            drv = packages.transporter;
+            exePath = "/bin/transporter";
+          };
+        };
+        defaultApp = apps.transporter;
       });
-    };
 }

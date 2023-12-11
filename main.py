@@ -1,3 +1,4 @@
+#!/bin/python3
 import asyncio
 import discord
 import tomllib
