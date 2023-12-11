@@ -1,0 +1,29 @@
+[messages] # messages acoompaning the sound of the same name
+moving = { title = "Access Granted", text = "Transport initiated", color = 0x00ff00 }
+no_permissions = { title = "Access Denied!", text = "You do not have permisssion to teleport", color = 0xff0000 }
+channel_not_found = { title = "Error!", text = "Unable to lock on to the coordinates", color = 0xff0000 }
+category_not_found = { title = "Error!", text = "Unable to lock on to the coordinates", color = 0xff0000 }
+locked = { title = "Error!", text = "Unable to comply, transporters are offline during red alert.", color = 0xff0000 }
+
+[sounds]
+moving = [ "./audio/access-granted.mp3", "./audio/transporting.mp3" ] #sound files to play when moving
+no_permissions = [ "./audio/autoraziation_denied.mp3" ] #sound files to play when not allowed to move into that channel
+channel_not_found = [ "./audio/not_transporting.mp3" ] #sound files to play when no fitting channel is found
+category_not_found = [ "./audio/not_transporting.mp3" ] #sound files to play when no fitting categorie is found
+locked = [ "./audio/red_alert.mp3" ] #sound files to play when wither starting or destenation are locked
+
+[commands]
+move = [ "transport to", "transport", "transport to the" ] #key words that initiate a move
+lock = [ "red alert" ] #key words that lock moving
+unlock = [ "green alert" ] #key words that unlock moving
+
+[channels]
+move = [ "transporter" ] #channels where to move to and from
+lock = [ "mess᲼hall" ] #channel where locking of move command is allowed
+
+[roles]
+lock = [ 1181268420755460177 ] #list of role ids that can initiate a transport lock
+
+[settings]
+token = "your discord token" #discord bot token
+audio = false # enable audio support you need to supply your own audio files
